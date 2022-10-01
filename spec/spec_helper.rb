@@ -1,5 +1,12 @@
 # frozen_string_literal: true
 
+require 'pry-byebug'
+require 'simplecov'
+
+SimpleCov.start do
+  add_filter 'spec'
+end
+
 require "immutable_struct_ex_redactable"
 
 RSpec.configure do |config|
