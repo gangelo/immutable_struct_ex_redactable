@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable RSpec/MultipleExpectations
 RSpec.describe ImmutableStructExRedactable do
   let(:config) { described_class.configuration }
   let(:hash) do
@@ -29,11 +30,11 @@ RSpec.describe ImmutableStructExRedactable do
       end
 
       it 'does not redact any field values' do
-        expect(subject.first).to eq hash[:first]
-        expect(subject.last).to eq hash[:last]
-        expect(subject.password).to eq hash[:password]
-        expect(subject.ssn).to eq hash[:ssn]
-        expect(subject.dob).to eq hash[:dob]
+        expect(create.first).to eq hash[:first]
+        expect(create.last).to eq hash[:last]
+        expect(create.password).to eq hash[:password]
+        expect(create.ssn).to eq hash[:ssn]
+        expect(create.dob).to eq hash[:dob]
       end
     end
 
@@ -45,14 +46,14 @@ RSpec.describe ImmutableStructExRedactable do
       end
 
       it 'redacts the correct field values' do
-        expect(subject.password).to eq config.redacted_label
-        expect(subject.ssn).to eq config.redacted_label
-        expect(subject.dob).to eq config.redacted_label
+        expect(create.password).to eq config.redacted_label
+        expect(create.ssn).to eq config.redacted_label
+        expect(create.dob).to eq config.redacted_label
       end
 
       it 'does not redact non-redacted field values' do
-        expect(subject.first).to eq hash[:first]
-        expect(subject.last).to eq hash[:last]
+        expect(create.first).to eq hash[:first]
+        expect(create.last).to eq hash[:last]
       end
     end
 
@@ -72,8 +73,8 @@ RSpec.describe ImmutableStructExRedactable do
       end
 
       it 'accepts the &block' do
-        expect { subject }.not_to raise_error
-        expect(subject.block_passed?).to be true
+        expect { create }.not_to raise_error
+        expect(create.block_passed?).to be true
       end
     end
   end
@@ -96,24 +97,24 @@ RSpec.describe ImmutableStructExRedactable do
       let(:redacted) { %i[] }
 
       it 'does not redact any field values' do
-        expect(subject.first).to eq hash[:first]
-        expect(subject.last).to eq hash[:last]
-        expect(subject.password).to eq hash[:password]
-        expect(subject.ssn).to eq hash[:ssn]
-        expect(subject.dob).to eq hash[:dob]
+        expect(create_with.first).to eq hash[:first]
+        expect(create_with.last).to eq hash[:last]
+        expect(create_with.password).to eq hash[:password]
+        expect(create_with.ssn).to eq hash[:ssn]
+        expect(create_with.dob).to eq hash[:dob]
       end
     end
 
     context 'with redacted fields configured' do
       it 'redacts the correct field values' do
-        expect(subject.first).to eq config.redacted_label
-        expect(subject.last).to eq config.redacted_label
+        expect(create_with.first).to eq config.redacted_label
+        expect(create_with.last).to eq config.redacted_label
       end
 
       it 'does not redact non-redacted field values' do
-        expect(subject.password).to eq hash[:password]
-        expect(subject.ssn).to eq hash[:ssn]
-        expect(subject.dob).to eq hash[:dob]
+        expect(create_with.password).to eq hash[:password]
+        expect(create_with.ssn).to eq hash[:ssn]
+        expect(create_with.dob).to eq hash[:dob]
       end
     end
 
@@ -127,9 +128,10 @@ RSpec.describe ImmutableStructExRedactable do
       end
 
       it 'accepts the &block' do
-        expect { subject }.not_to raise_error
-        expect(subject.block_passed?).to be true
+        expect { create_with }.not_to raise_error
+        expect(create_with.block_passed?).to be true
       end
     end
   end
 end
+# rubocop:enable RSpec/MultipleExpectations
