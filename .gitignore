@@ -7,5 +7,14 @@
 /spec/reports/
 /tmp/
 
+/rdoc/
+*.gem
+
 # rspec failure tracking
 .rspec_status
+
+/.vscode/
+*.code-workspace
+
+scratch*.rb
+readme.txt
