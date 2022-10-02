@@ -23,7 +23,7 @@ RSpec.describe ImmutableStructExRedactable do
 
     context 'with no redacted fields configured' do
       before do
-        ImmutableStructExRedactable.configure do |config|
+        described_class.configure do |config|
           config.redacted = %i[]
         end
       end
@@ -39,7 +39,7 @@ RSpec.describe ImmutableStructExRedactable do
 
     context 'with redacted fields configured' do
       before do
-        ImmutableStructExRedactable.configure do |config|
+        described_class.configure do |config|
           config.redacted = %i[password ssn dob]
         end
       end
@@ -66,14 +66,14 @@ RSpec.describe ImmutableStructExRedactable do
       end
 
       before do
-        ImmutableStructExRedactable.configure do |config|
+        described_class.configure do |config|
           config.redacted = %i[password ssn dob]
         end
       end
 
       it 'accepts the &block' do
-        expect { subject }.to_not raise_error
-        expect(subject.block_passed?).to eq true
+        expect { subject }.not_to raise_error
+        expect(subject.block_passed?).to be true
       end
     end
   end
@@ -127,8 +127,8 @@ RSpec.describe ImmutableStructExRedactable do
       end
 
       it 'accepts the &block' do
-        expect { subject }.to_not raise_error
-        expect(subject.block_passed?).to eq true
+        expect { subject }.not_to raise_error
+        expect(subject.block_passed?).to be true
       end
     end
   end
