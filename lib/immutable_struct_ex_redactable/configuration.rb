@@ -38,6 +38,21 @@ module ImmutableStructExRedactable
     # @return [String] the label that should replace redacted field values.
     attr_accessor :redacted_label
 
+    # Gets/sets the redacted unsafe switch that determines whether or not
+    # redacted field values are retained as private methods named
+    # #unredacted_<field> on the struct returned. If this configuration
+    # property is true, redacted field values will be retained and
+    # accessible as private methods on the struct.
+    #
+    # The default is false.
+    #
+    # @return [Bool] the unsafe switch value.
+    attr_accessor :redacted_unsafe
+
+    def redacted_unsafe?
+      @redacted_unsafe
+    end
+
     # The constructor; calls {#reset}.
     def initialize
       reset
@@ -49,6 +64,7 @@ module ImmutableStructExRedactable
     def reset
       @redacted = %i[password]
       @redacted_label = '******'
+      @redacted_unsafe = false
     end
   end
 end

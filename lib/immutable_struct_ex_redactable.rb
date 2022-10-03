@@ -16,8 +16,10 @@ module ImmutableStructExRedactable
   end
 
   def create_with(config, **hash, &block)
-    redacted_private_accessible_module =
-      redacted_accessible_module_for(hash: hash, config: config)
+    if config.redacted_unsafe?
+      redacted_private_accessible_module =
+        redacted_accessible_module_for(hash: hash, config: config)
+    end
 
     config.redacted.each do |attr|
       next unless hash.key? attr
@@ -26,7 +28,9 @@ module ImmutableStructExRedactable
     end
 
     ImmutableStructEx.new(**hash, &block).tap do |struct|
-      struct.extend(redacted_private_accessible_module)
+      if config.redacted_unsafe?
+        struct.extend(redacted_private_accessible_module)
+      end
     end
   end
 end
