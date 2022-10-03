@@ -1,5 +1,32 @@
 # frozen_string_literal: true
 
+RSpec.shared_examples 'there is private method access to redacted field values' do
+  it 'adds private methods to access the redacted field values' do
+    expect(
+      redacted.all? do |field|
+        subject.send(:"unredacted_#{field}") == hash[field]
+      end
+    ).to be true
+  end
+end
+
+RSpec.shared_examples 'there is no private method access to unredacted field values' do
+  it 'does not add private methods to access the unredacted field values' do
+    subject_private_methods = subject.private_methods
+    expect((redacted - hash.keys).any? do |field|
+             subject_private_methods.include? :"unredacted_#{field}"
+           end).to be false
+  end
+end
+
+RSpec.shared_examples 'there are no redacted field values' do
+  it 'does not redact any field values' do
+    expect(hash.keys.any? do |field|
+             subject.send(field) == config.redacted_label
+           end).to be false
+  end
+end
+
 # rubocop:disable RSpec/MultipleExpectations
 RSpec.describe ImmutableStructExRedactable do
   let(:config) { described_class.configuration }
@@ -7,6 +34,7 @@ RSpec.describe ImmutableStructExRedactable do
     {
       first: 'first',
       last: 'last',
+      email: 'first.last@gmail.com',
       password: 'p@ssword',
       ssn: 'ssn',
       dob: '2022-10-01'
@@ -29,19 +57,13 @@ RSpec.describe ImmutableStructExRedactable do
         end
       end
 
-      it 'does not redact any field values' do
-        expect(create.first).to eq hash[:first]
-        expect(create.last).to eq hash[:last]
-        expect(create.password).to eq hash[:password]
-        expect(create.ssn).to eq hash[:ssn]
-        expect(create.dob).to eq hash[:dob]
-      end
+      it_behaves_like 'there are no redacted field values'
     end
 
     context 'with redacted fields configured' do
       before do
         described_class.configure do |config|
-          config.redacted = %i[password ssn dob]
+          config.redacted = %i[password ssn dob email]
         end
       end
 
@@ -49,6 +71,7 @@ RSpec.describe ImmutableStructExRedactable do
         expect(create.password).to eq config.redacted_label
         expect(create.ssn).to eq config.redacted_label
         expect(create.dob).to eq config.redacted_label
+        expect(create.email).to eq config.redacted_label
       end
 
       it 'does not redact non-redacted field values' do
@@ -66,16 +89,31 @@ RSpec.describe ImmutableStructExRedactable do
         end
       end
 
-      before do
-        described_class.configure do |config|
-          config.redacted = %i[password ssn dob]
-        end
-      end
-
       it 'accepts the &block' do
         expect { create }.not_to raise_error
         expect(create.block_passed?).to be true
       end
+    end
+
+    context 'when the redacted_unsafe configuration property is true' do
+      subject(:create) do
+        described_class.create(**hash)
+      end
+
+      before do
+        described_class.configure do |config|
+          config.redacted = redacted
+          config.redacted_label = redacted_label
+          config.redacted_unsafe = redacted_unsafe
+        end
+      end
+
+      let(:redacted) { %i[password email dob ssn] }
+      let(:redacted_unsafe) { true }
+      let(:redacted_label) { '[redacted]' }
+
+      it_behaves_like 'there is private method access to redacted field values'
+      it_behaves_like 'there is no private method access to unredacted field values'
     end
   end
 

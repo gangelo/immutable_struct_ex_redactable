@@ -17,13 +17,12 @@
 
 `immutable_struct_ex_redactable` maintains all the functionality of the *immutable_struct_ex* gem, but allows you to create immutable structs that can be configured to redact field values using standard gem configuration (`ImmutableStructExRedactable.configure { |config| ... }`) or by passing configuration options to the appropriate method (`ImmutableStructExRedactable.create_with(config, ...)`)
 
+### Future Enhancements
+- Future functionality will probably accept regex pattern for redacting field values (e.g. 'gen***@***.com').
+
 ## Usage
 
 Follow the instructions for [Installation](#installation) first, to incorporate this gem into your code.
-
-### Enhancements
-- Future functionality may include regex pattern for redacting field values (e.g. 'gen***@***.com').
-- Availability of redacted values as private fields/methods for use in `&blocks`.
 
 ### Basic usage
 
@@ -58,9 +57,10 @@ ImmutableStructExRedactable.create(**fields)
 => #<struct  first="Jane", last="Smith", password="[REDACTED]", dob="[REDACTED]">
 
 ```
-NOTE: Setting the global defaults in the above manner will affect **every** *immutable_struct_ex_redactable* struct you create unless you override the global configuration options by passing a custom configuration.
 
-#### Overriding the Global Configuration Operions
+NOTE: Setting the global defaults in the above manner will affect **every** *immutable_struct_ex_redactable* struct instance you create unless you override the global configuration options, by passing a custom configuration.
+
+#### Overriding the Global Configuration Options
 
 To override the global configuration options, you may do so by calling the `ImmutableStructExRedactable#create_with` method in the following manner:
 
@@ -81,6 +81,45 @@ fields = {
 # Call the #create_with method passing the custom configuration options.
 ImmutableStructExRedactable.create_with(custom_config, **fields)
 => #<struct  first="John", last="Smith", password="[NO WAY JOSE]", dob="[NO WAY JOSE]">
+```
+
+### Access to the Original Redacted Field Values
+
+By default, *immutable_struct_ex_redactable* **will not** allow access to redacted field values; that is, field values marked for redaction via the global configuration (`ImmutableStructExRedactable::Configuration#redacted`) or by overriding the global configuration by passing a custom configuration (`ImmutableStructExRedactable.create_with(my_config, ...)`). However, if you really *need* access to redacted field values in their original, *un*redacted form, you can turn on the `ImmutableStructExRedactable::Configuration#redacted_unsafe` option in the global configuration or turn this same option on when passing a custom configuration. Turning the `redacted_unsafe` configuration option on in either scenario will instruct *immutable_struct_ex_redactable* to create *private methods* on structs created that will allow access to the original *un*redacted field values via `send:`. The *private methods* created that will allow access to the original *un*redacted field values, will have the following naming convention:
+
+```ruby
+unredacted_<redacted field>
+# Where <redacted field> == the Symbol of the redacted field.
+# For example: unredacted_password, unredacted_dob, unredacted_ssn, etc.
+```
+
+For example:
+
+```ruby
+custom_config = ImmutableStructExRedactable::Configuration.new.tap do |config|
+  config.redacted_unsafe = true
+end
+
+hash = { username: 'jsmith', password: 'p@ssw0rd' }
+struct = ImmutableStructExRedactable.create_with(custom_config, **hash) do
+  def to_h_unredacted
+    {
+      username: username,
+      password: send(:unredacted_password)
+    }
+  end
+end
+=> #<struct  username="jsmith", password="******">
+
+struct.unredacted_password
+#=> NoMethodError: private method `unredacted_password' called for #<struct username="jsmith", password="******">...
+
+struct.send :unredacted_password
+#=> "p@ssw0rd"
+
+struct.to_h_unredacted
+#=> {:username=>"jsmith", :password=>"p@ssw0rd"}
+
 ```
 
 ### &blocks are Permitted
