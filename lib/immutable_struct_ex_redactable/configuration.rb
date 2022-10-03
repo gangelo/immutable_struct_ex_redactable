@@ -49,13 +49,13 @@ module ImmutableStructExRedactable
     # @return [Bool] the unsafe switch value.
     attr_accessor :redacted_unsafe
 
-    def redacted_unsafe?
-      @redacted_unsafe
-    end
-
     # The constructor; calls {#reset}.
     def initialize
       reset
+    end
+
+    def redacted_unsafe?
+      @redacted_unsafe
     end
 
     # Resets the configuration settings to their default values.

@@ -28,9 +28,7 @@ module ImmutableStructExRedactable
     end
 
     ImmutableStructEx.new(**hash, &block).tap do |struct|
-      if config.redacted_unsafe?
-        struct.extend(redacted_private_accessible_module)
-      end
+      struct.extend(redacted_private_accessible_module) if config.redacted_unsafe?
     end
   end
 end
