@@ -13,7 +13,6 @@ module ImmutableStructExRedactable
         Module.new do
           config.redacted.each do |attr|
             unredacted_attr_method = "unredacted_#{attr}"
-            attr_value = hash[attr]
             code = <<~CODE
               def #{unredacted_attr_method}
                 "#{hash[attr]}"
