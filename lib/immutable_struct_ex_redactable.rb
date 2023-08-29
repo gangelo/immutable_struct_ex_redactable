@@ -10,9 +10,9 @@ module ImmutableStructExRedactable
 
   module_function
 
-  def create(**hash, &block)
+  def create(...)
     config = ImmutableStructExRedactable.configure
-    create_with(config, **hash, &block)
+    create_with(config, ...)
   end
 
   def create_with(config, **hash, &block)
