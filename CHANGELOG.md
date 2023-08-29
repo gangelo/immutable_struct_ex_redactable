@@ -1,3 +1,9 @@
+## [1.2.2] - 2023-08-29
+
+Changes
+
+- Ruby gem updates.
+
 ## [1.2.1] - 2023-08-17
 
 Changes
