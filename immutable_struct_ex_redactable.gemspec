@@ -34,4 +34,14 @@ Gem::Specification.new do |spec|
   # Uncomment to register a new dependency of your gem
   spec.add_dependency 'immutable_struct_ex', '~> 1.0', '>= 1.0.1'
   spec.metadata['rubygems_mfa_required'] = 'true'
+
+  spec.post_install_message = <<~POST_INSTALL
+    Thank you for installing immutable_struct_ex_redactable.
+
+    immutable_struct_ex_redactable now supports `ImmutableStructExRedactable::Configuration#whitelist`
+    See the README.md for more information.
+
+    Please note that `ImmutableStructExRedactable::Configuration#redacted` will be deprecated in a future release.
+    Please use `ImmutableStructExRedactable::Configuration#blacklist` instead.
+  POST_INSTALL
 end
