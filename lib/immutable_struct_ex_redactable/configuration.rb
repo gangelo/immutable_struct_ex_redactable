@@ -24,12 +24,21 @@ module ImmutableStructExRedactable
   # This class encapsulates the configuration properties for this gem and
   # provides methods and attributes that allow for management of the same.
   class Configuration
-    # Gets/sets the fields that should be redacted for this gem.
+    # Gets/sets the blacklisted fields that should be redacted for this gem.
     #
     # The default is %i[password].
     #
     # @return [Array<Symbol>] an Array of Symbols that should be redacted.
-    attr_accessor :redacted
+    attr_accessor :blacklist
+    alias redacted blacklist
+    alias redacted= blacklist=
+
+    # Gets/sets the whitelisted fields that should not be redacted for this gem.
+    #
+    # The default is [].
+    #
+    # @return [Array<Symbol>] an Array of Symbols that should be whitelisted.
+    attr_accessor :whitelist
 
     # Gets/sets the label that should replace redacted field values.
     #
@@ -62,7 +71,8 @@ module ImmutableStructExRedactable
     #
     # @return [void]
     def reset
-      @redacted = %i[password]
+      @blacklist = %i[password]
+      @whitelist = []
       @redacted_label = '******'
       @redacted_unsafe = false
     end

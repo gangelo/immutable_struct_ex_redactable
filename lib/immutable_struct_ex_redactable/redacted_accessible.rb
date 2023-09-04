@@ -11,7 +11,7 @@ module ImmutableStructExRedactable
     module ClassModules
       def redacted_accessible_module_for(hash:, config:)
         Module.new do
-          config.redacted.each do |attr|
+          config.blacklist.each do |attr|
             unredacted_attr_method = "unredacted_#{attr}"
             code = <<~CODE
               def #{unredacted_attr_method}
