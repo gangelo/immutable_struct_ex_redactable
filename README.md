@@ -15,10 +15,9 @@
 
 `immutable_struct_ex_redactable` is the *redactable version* of the world-famous *immutable_struct_ex* immutable struct :). To find out more about the *immutable_struct_ex* gem, visit the Rubygems.org entry for [immutable_struct_ex](https://rubygems.org/gems/immutable_struct_ex).
 
-`immutable_struct_ex_redactable` maintains all the functionality of the *immutable_struct_ex* gem, but allows you to create immutable structs that can be configured to redact field values using standard gem configuration (`ImmutableStructExRedactable.configure { |config| ... }`) or by passing configuration options to the appropriate method (`ImmutableStructExRedactable.create_with(config, ...)`)
+`immutable_struct_ex_redactable` maintains all the functionality of the *immutable_struct_ex* gem, but allows you to create immutable structs that can be configured to redact field values using standard gem configuration (`ImmutableStructExRedactable.configure { |config| ... }`) or by passing configuration options to the appropriate method (`ImmutableStructExRedactable.create_with(config, ...)`).
 
-### Future Enhancements
-- Future functionality will probably accept regex pattern for redacting field values (e.g. 'gen***@***.com').
+NOTE: both **whitelisting** and **blacklisting** are supported.
 
 ## Usage
 
@@ -28,8 +27,37 @@ Follow the instructions for [Installation](#installation) first, to incorporate 
 
 #### Configure Gem Global Defaults
 
-*immutable_struct_ex_redactable*, by default, will redact fields named `:password` using the redacted label `"******"`. This will not meet your needs in all circumstances most likely. If this is *not* the case, you may change the default redactable fields and redactable label by changing the *immutable_struct_ex_redactable* configuration as follows:
+*immutable_struct_ex_redactable*, by default, will redact fields named `:password` using the redacted label `"******"`. This will not meet your needs in all circumstances most likely. If this is *not* the case, you may change the fields that are redacted and the redactable label by changing the *immutable_struct_ex_redactable* configuration via the `#whitelist` or `#blacklist` configuration options:
 
+##### Using a whitelist
+```ruby
+ImmutableStructExRedactable::configure do |config|
+  config.whitelist = %i[first last]
+  config.redacted_label = '[REDACTED]'
+end
+
+fields = {
+  first: 'John',
+  last: 'Smith',
+  password: 'p@ssw0rd',
+  dob: '1986-05-12'
+}
+
+ImmutableStructExRedactable.create(**fields)
+=> #<struct  first="John", last="Smith", password="[REDACTED]", dob="[REDACTED]">
+
+fields = {
+  first: 'Jane',
+  last: 'Smith',
+  password: 'h3l10W04lD',
+  dob: '1990-12-26'
+}
+
+ImmutableStructExRedactable.create(**fields)
+=> #<struct  first="Jane", last="Smith", password="[REDACTED]", dob="[REDACTED]">
+```
+
+##### Using a blacklist
 ```ruby
 ImmutableStructExRedactable::configure do |config|
   config.blacklist = %i[password dob ssn phone]
@@ -55,7 +83,6 @@ fields = {
 
 ImmutableStructExRedactable.create(**fields)
 => #<struct  first="Jane", last="Smith", password="[REDACTED]", dob="[REDACTED]">
-
 ```
 
 NOTE: Setting the global defaults in the above manner will affect **every** *immutable_struct_ex_redactable* struct instance you create unless you override the global configuration options, by passing a custom configuration.
@@ -67,7 +94,7 @@ To override the global configuration options, you may do so by calling the `Immu
 ```ruby
 # Create a custom configuration with the options you want to use.
 custom_config = ImmutableStructExRedactable::Configuration.new.tap do |config|
-  config.blacklist = %i[password dob]
+  config.whitelist = %i[first last]
   config.redacted_label = '[NO WAY JOSE]'
 end
 
@@ -85,7 +112,7 @@ ImmutableStructExRedactable.create_with(custom_config, **fields)
 
 ### Access to the Original Redacted Field Values
 
-By default, *immutable_struct_ex_redactable* **will not** allow access to redacted field values; that is, field values marked for redaction via the global configuration (`ImmutableStructExRedactable::Configuration#blacklist`) or by overriding the global configuration by passing a custom configuration (`ImmutableStructExRedactable.create_with(my_config, ...)`). However, if you really *need* access to redacted field values in their original, *un*redacted form, you can turn on the `ImmutableStructExRedactable::Configuration#redacted_unsafe` option in the global configuration or turn this same option on when passing a custom configuration. Turning the `redacted_unsafe` configuration option on in either scenario will instruct *immutable_struct_ex_redactable* to create *private methods* on structs created that will allow access to the original *un*redacted field values via `send:`. The *private methods* created that will allow access to the original *un*redacted field values, will have the following naming convention:
+By default, *immutable_struct_ex_redactable* **will not** allow access to redacted field values; that is, field values marked for redaction via the global configuration (`ImmutableStructExRedactable::Configuration#whitelist/#blacklist`) or by overriding the global configuration by passing a custom configuration (`ImmutableStructExRedactable.create_with(my_config, ...)`). However, if you really *need* access to redacted field values in their original, *un*redacted form, you can turn on the `ImmutableStructExRedactable::Configuration#redacted_unsafe` option in the global configuration or turn this same option on when passing a custom configuration. Turning the `redacted_unsafe` configuration option on in either scenario will instruct *immutable_struct_ex_redactable* to create *private methods* on structs created that will allow access to the original *un*redacted field values via `send:`. The *private methods* created that will allow access to the original *un*redacted field values, will have the following naming convention:
 
 ```ruby
 unredacted_<redacted field>
@@ -97,6 +124,7 @@ For example:
 
 ```ruby
 custom_config = ImmutableStructExRedactable::Configuration.new.tap do |config|
+  config.whitelist = %i[username]
   config.redacted_unsafe = true
 end
 
@@ -119,7 +147,6 @@ struct.send :unredacted_password
 
 struct.to_h_unredacted
 #=> {:username=>"jsmith", :password=>"p@ssw0rd"}
-
 ```
 
 ### &blocks are Permitted
@@ -165,7 +192,7 @@ class MyRedactableImmutableStruct
 
   def config
     @config ||= ImmutableStructExRedactable::Configuration.new.tap do |config|
-      config.redacted = %i[password]
+      config.whitelist = %i[username]
       config.redacted_label = 'xxxxxx'
     end
   end
