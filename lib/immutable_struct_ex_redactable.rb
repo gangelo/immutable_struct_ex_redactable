@@ -21,10 +21,18 @@ module ImmutableStructExRedactable
         redacted_accessible_module_for(hash: hash, config: config)
     end
 
-    config.blacklist.each do |attr|
-      next unless hash.key? attr
+    if config.whitelist.any?
+      hash.each do |key, _|
+        next if config.whitelist.include? key
 
-      hash[attr] = config.redacted_label
+        hash[key] = config.redacted_label
+      end
+    else
+      config.blacklist.each do |attr|
+        next unless hash.key? attr
+
+        hash[attr] = config.redacted_label
+      end
     end
 
     ImmutableStructEx.new(**hash, &block).tap do |struct|
