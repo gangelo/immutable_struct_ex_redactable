@@ -11,15 +11,30 @@ module ImmutableStructExRedactable
     module ClassModules
       def redacted_accessible_module_for(hash:, config:)
         Module.new do
-          config.blacklist.each do |attr|
-            unredacted_attr_method = "unredacted_#{attr}"
-            code = <<~CODE
-              def #{unredacted_attr_method}
-                "#{hash[attr]}"
-              end
-              private :#{unredacted_attr_method}
-            CODE
-            class_eval code
+          if config.whitelist.any?
+            hash.each do |attr, _|
+              next if config.whitelist.include? attr
+
+              unredacted_attr_method = "unredacted_#{attr}"
+              code = <<~CODE
+                def #{unredacted_attr_method}
+                  "#{hash[attr]}"
+                end
+                private :#{unredacted_attr_method}
+              CODE
+              class_eval code
+            end
+          else
+            config.blacklist.each do |attr|
+              unredacted_attr_method = "unredacted_#{attr}"
+              code = <<~CODE
+                def #{unredacted_attr_method}
+                  "#{hash[attr]}"
+                end
+                private :#{unredacted_attr_method}
+              CODE
+              class_eval code
+            end
           end
         end
       end
