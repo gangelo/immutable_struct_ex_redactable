@@ -32,7 +32,7 @@ Follow the instructions for [Installation](#installation) first, to incorporate 
 
 ```ruby
 ImmutableStructExRedactable::configure do |config|
-  config.redacted = %i[password dob ssn phone]
+  config.blacklist = %i[password dob ssn phone]
   config.redacted_label = '[REDACTED]'
 end
 
@@ -67,7 +67,7 @@ To override the global configuration options, you may do so by calling the `Immu
 ```ruby
 # Create a custom configuration with the options you want to use.
 custom_config = ImmutableStructExRedactable::Configuration.new.tap do |config|
-  config.redacted = %i[password dob]
+  config.blacklist = %i[password dob]
   config.redacted_label = '[NO WAY JOSE]'
 end
 
@@ -85,7 +85,7 @@ ImmutableStructExRedactable.create_with(custom_config, **fields)
 
 ### Access to the Original Redacted Field Values
 
-By default, *immutable_struct_ex_redactable* **will not** allow access to redacted field values; that is, field values marked for redaction via the global configuration (`ImmutableStructExRedactable::Configuration#redacted`) or by overriding the global configuration by passing a custom configuration (`ImmutableStructExRedactable.create_with(my_config, ...)`). However, if you really *need* access to redacted field values in their original, *un*redacted form, you can turn on the `ImmutableStructExRedactable::Configuration#redacted_unsafe` option in the global configuration or turn this same option on when passing a custom configuration. Turning the `redacted_unsafe` configuration option on in either scenario will instruct *immutable_struct_ex_redactable* to create *private methods* on structs created that will allow access to the original *un*redacted field values via `send:`. The *private methods* created that will allow access to the original *un*redacted field values, will have the following naming convention:
+By default, *immutable_struct_ex_redactable* **will not** allow access to redacted field values; that is, field values marked for redaction via the global configuration (`ImmutableStructExRedactable::Configuration#blacklist`) or by overriding the global configuration by passing a custom configuration (`ImmutableStructExRedactable.create_with(my_config, ...)`). However, if you really *need* access to redacted field values in their original, *un*redacted form, you can turn on the `ImmutableStructExRedactable::Configuration#redacted_unsafe` option in the global configuration or turn this same option on when passing a custom configuration. Turning the `redacted_unsafe` configuration option on in either scenario will instruct *immutable_struct_ex_redactable* to create *private methods* on structs created that will allow access to the original *un*redacted field values via `send:`. The *private methods* created that will allow access to the original *un*redacted field values, will have the following naming convention:
 
 ```ruby
 unredacted_<redacted field>

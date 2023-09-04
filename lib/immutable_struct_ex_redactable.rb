@@ -21,7 +21,7 @@ module ImmutableStructExRedactable
         redacted_accessible_module_for(hash: hash, config: config)
     end
 
-    config.redacted.each do |attr|
+    config.blacklist.each do |attr|
       next unless hash.key? attr
 
       hash[attr] = config.redacted_label
