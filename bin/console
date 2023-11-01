@@ -3,7 +3,6 @@
 
 require 'bundler/setup'
 require 'immutable_struct_ex_redactable'
-require 'immutable_struct_ex_redactable/configuration'
 
 require 'pry-byebug'
 Pry.start
