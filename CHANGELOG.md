@@ -1,3 +1,10 @@
+## [1.3.3] - 2023-12-02
+
+Changes
+
+- Ruby gem updates.
+- Fix rubocop violations
+
 ## [1.3.2] - 2023-12-02
 
 Changes
