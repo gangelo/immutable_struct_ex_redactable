@@ -22,7 +22,7 @@ module ImmutableStructExRedactable
     end
 
     if config.whitelist.any?
-      hash.each do |key, _|
+      hash.each_key do |key|
         next if config.whitelist.include? key
 
         hash[key] = config.redacted_label

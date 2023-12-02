@@ -12,7 +12,7 @@ module ImmutableStructExRedactable
       def redacted_accessible_module_for(hash:, config:)
         Module.new do
           if config.whitelist.any?
-            hash.each do |attr, _|
+            hash.each_key do |attr|
               next if config.whitelist.include? attr
 
               unredacted_attr_method = "unredacted_#{attr}"
