@@ -1,9 +1,19 @@
+## [1.3.4] - 2023-12-27
+
+Changes
+
+- Add github actions to run tests and rubocop.
+- DRY up code in immutable_struct_ex_redactable/redacted_accessible.rb.
+- Ruby gem updates.
+- Fix rubocop violations.
+- Add some rubocop rules.
+
 ## [1.3.3] - 2023-12-02
 
 Changes
 
 - Ruby gem updates.
-- Fix rubocop violations
+- Fix rubocop violations.
 
 ## [1.3.2] - 2023-12-02
 

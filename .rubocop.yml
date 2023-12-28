@@ -184,3 +184,12 @@ Style/StringMethods:
 # Checks for use of parentheses around ternary conditions.
 Style/TernaryParentheses:
   EnforcedStyle: require_parentheses_when_complex
+
+NestedGroups:
+  Max: 4
+
+MultipleMemoizedHelpers:
+  Max: 6
+
+ExampleLength:
+  Max: 6

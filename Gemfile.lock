@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    immutable_struct_ex_redactable (1.3.3)
-      immutable_struct_ex (~> 1.0, >= 1.0.1)
+    immutable_struct_ex_redactable (1.3.4)
+      immutable_struct_ex (~> 1.0, >= 1.0.5)
 
 GEM
   remote: https://rubygems.org/
@@ -12,12 +12,12 @@ GEM
     coderay (1.1.3)
     diff-lcs (1.5.0)
     docile (1.4.0)
-    immutable_struct_ex (1.0.4)
-    json (2.7.0)
+    immutable_struct_ex (1.0.5)
+    json (2.7.1)
     kwalify (0.7.2)
     language_server-protocol (3.17.0.3)
     method_source (1.0.0)
-    parallel (1.23.0)
+    parallel (1.24.0)
     parser (3.2.2.4)
       ast (~> 2.4.1)
       racc
@@ -34,7 +34,7 @@ GEM
       kwalify (~> 0.7.0)
       parser (~> 3.2.0)
       rainbow (>= 2.0, < 4.0)
-    regexp_parser (2.8.2)
+    regexp_parser (2.8.3)
     rexml (3.2.6)
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
@@ -49,7 +49,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.12.0)
     rspec-support (3.12.1)
-    rubocop (1.58.0)
+    rubocop (1.59.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
@@ -62,6 +62,17 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.30.0)
       parser (>= 3.2.1.0)
+    rubocop-capybara (2.19.0)
+      rubocop (~> 1.41)
+    rubocop-factory_bot (2.24.0)
+      rubocop (~> 1.33)
+    rubocop-performance (1.20.1)
+      rubocop (>= 1.48.1, < 2.0)
+      rubocop-ast (>= 1.30.0, < 2.0)
+    rubocop-rspec (2.25.0)
+      rubocop (~> 1.40)
+      rubocop-capybara (~> 2.17)
+      rubocop-factory_bot (~> 2.22)
     ruby-progressbar (1.13.0)
     simplecov (0.22.0)
       docile (~> 1.1)
@@ -77,13 +88,16 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  bundler (~> 2.4, >= 2.4.21)
   immutable_struct_ex_redactable!
-  pry-byebug (>= 3.9, < 4.0)
-  rake (~> 13.0)
-  reek (~> 6.1)
-  rspec (>= 3.12, < 4.0)
-  rubocop (>= 1.56.0, < 2.0)
-  simplecov (>= 0.22.0, < 1.0)
+  pry-byebug (~> 3.9)
+  rake (~> 13.0, >= 13.0.6)
+  reek (~> 6.1, >= 6.1.1)
+  rspec (>= 3.10)
+  rubocop (~> 1.35)
+  rubocop-performance (~> 1.14, >= 1.14.3)
+  rubocop-rspec (~> 2.12, >= 2.12.1)
+  simplecov (~> 0.22.0)
 
 BUNDLED WITH
-   2.3.22
+   2.5.3
