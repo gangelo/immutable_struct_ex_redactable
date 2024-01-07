@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = 'Creates and initializes an immutable struct in one step and provides redaction functionality.'
   spec.homepage = 'https://github.com/gangelo/immutable_struct_ex_redactable'
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 3.0.1'
+  spec.required_ruby_version = Gem::Requirement.new('>= 3.0.1', '< 4.0')
 
   # spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
 

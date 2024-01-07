@@ -1,3 +1,10 @@
+## [1.3.5] - 2024-01-07
+
+Changes
+
+- Relax ruby version requirement to Gem::Requirement.new(">= 3.0.1", "< 4.0").
+- Ruby gem updates.
+
 ## [1.3.4] - 2023-12-27
 
 Changes
