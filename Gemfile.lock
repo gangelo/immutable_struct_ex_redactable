@@ -41,7 +41,7 @@ GEM
       dry-inflector (~> 1.0)
       dry-logic (~> 1.4)
       zeitwerk (~> 2.6)
-    immutable_struct_ex (1.0.5)
+    immutable_struct_ex (1.0.6)
     json (2.7.1)
     language_server-protocol (3.17.0.3)
     method_source (1.0.0)
