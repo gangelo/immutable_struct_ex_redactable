@@ -1,9 +1,9 @@
 # `immutable_struct_ex_redactable`
 
-[![Ruby](https://github.com/gangelo/immutable_struct_ex_redactable/actions/workflows/ruby.yml/badge.svg)](https://github.com/gangelo/immutable_struct_ex_redactable/actions/workflows/ruby.yml) 
-[![GitHub version](http://badge.fury.io/gh/gangelo%2Fimmutable_struct_ex_redactable.svg?version=4)](https://badge.fury.io/gh/gangelo%2Fimmutable_struct_ex_redactable) 
-[![Gem Version](https://badge.fury.io/rb/immutable_struct_ex_redactable.svg?version=4)](https://badge.fury.io/rb/immutable_struct_ex_redactable) 
-[![Documentation](http://img.shields.io/badge/docs-rdoc.info-blue.svg)](http://www.rubydoc.info/gems/immutable_struct_ex_redactable/) [![Report Issues](https://img.shields.io/badge/report-issues-red.svg)](https://github.com/gangelo/immutable_struct_ex_redactable/issues) 
+[![Ruby](https://github.com/gangelo/immutable_struct_ex_redactable/actions/workflows/ruby.yml/badge.svg)](https://github.com/gangelo/immutable_struct_ex_redactable/actions/workflows/ruby.yml)
+[![GitHub version](http://badge.fury.io/gh/gangelo%2Fimmutable_struct_ex_redactable.svg?version=5)](https://badge.fury.io/gh/gangelo%2Fimmutable_struct_ex_redactable)
+[![Gem Version](https://badge.fury.io/rb/immutable_struct_ex_redactable.svg?version=5)](https://badge.fury.io/rb/immutable_struct_ex_redactable)
+[![Documentation](http://img.shields.io/badge/docs-rdoc.info-blue.svg)](http://www.rubydoc.info/gems/immutable_struct_ex_redactable/) [![Report Issues](https://img.shields.io/badge/report-issues-red.svg)](https://github.com/gangelo/immutable_struct_ex_redactable/issues)
 [![License](http://img.shields.io/badge/license-MIT-yellowgreen.svg)](#license)
 
 ## Introduction
