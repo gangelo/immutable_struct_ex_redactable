@@ -1,3 +1,9 @@
+## [1.3.6] - 2024-01-19
+
+Changes
+
+- Ruby gem updates.
+
 ## [1.3.5] - 2024-01-07
 
 Changes
