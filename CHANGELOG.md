@@ -1,3 +1,11 @@
+## [1.3.7] - 2024-02-21
+
+Changes
+
+- Ruby gem updates.
+- Add groups to Gemfile.
+- Minor code refactors.
+
 ## [1.3.6] - 2024-01-19
 
 Changes
