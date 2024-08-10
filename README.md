@@ -1,16 +1,16 @@
 # `immutable_struct_ex_redactable`
 
 [![Ruby](https://github.com/gangelo/immutable_struct_ex_redactable/actions/workflows/ruby.yml/badge.svg)](https://github.com/gangelo/immutable_struct_ex_redactable/actions/workflows/ruby.yml)
-[![GitHub version](http://badge.fury.io/gh/gangelo%2Fimmutable_struct_ex_redactable.svg?version=7)](https://badge.fury.io/gh/gangelo%2Fimmutable_struct_ex_redactable)
-[![Gem Version](https://badge.fury.io/rb/immutable_struct_ex_redactable.svg?version=7)](https://badge.fury.io/rb/immutable_struct_ex_redactable)
+[![GitHub version](http://badge.fury.io/gh/gangelo%2Fimmutable_struct_ex_redactable.svg?version=8)](https://badge.fury.io/gh/gangelo%2Fimmutable_struct_ex_redactable)
+[![Gem Version](https://badge.fury.io/rb/immutable_struct_ex_redactable.svg?version=8)](https://badge.fury.io/rb/immutable_struct_ex_redactable)
 [![Documentation](http://img.shields.io/badge/docs-rdoc.info-blue.svg)](http://www.rubydoc.info/gems/immutable_struct_ex_redactable/) [![Report Issues](https://img.shields.io/badge/report-issues-red.svg)](https://github.com/gangelo/immutable_struct_ex_redactable/issues)
 [![License](http://img.shields.io/badge/license-MIT-yellowgreen.svg)](#license)
 
 ## Introduction
 
-`immutable_struct_ex_redactable` is the *redactable version* of the world-famous *immutable_struct_ex* immutable struct :). To find out more about the *immutable_struct_ex* gem, visit the Rubygems.org entry for [immutable_struct_ex](https://rubygems.org/gems/immutable_struct_ex).
+`immutable_struct_ex_redactable` is the _redactable version_ of the world-famous _immutable_struct_ex_ immutable struct :). To find out more about the _immutable_struct_ex_ gem, visit the Rubygems.org entry for [immutable_struct_ex](https://rubygems.org/gems/immutable_struct_ex).
 
-`immutable_struct_ex_redactable` maintains all the functionality of the *immutable_struct_ex* gem, but allows you to create immutable structs that can be configured to redact field values using standard gem configuration (`ImmutableStructExRedactable.configure { |config| ... }`) or by passing configuration options to the appropriate method (`ImmutableStructExRedactable.create_with(config, ...)`).
+`immutable_struct_ex_redactable` maintains all the functionality of the _immutable_struct_ex_ gem, but allows you to create immutable structs that can be configured to redact field values using standard gem configuration (`ImmutableStructExRedactable.configure { |config| ... }`) or by passing configuration options to the appropriate method (`ImmutableStructExRedactable.create_with(config, ...)`).
 
 NOTE: both **whitelisting** and **blacklisting** are supported.
 
@@ -22,9 +22,10 @@ Follow the instructions for [Installation](#installation) first, to incorporate 
 
 #### Configure Gem Global Defaults
 
-*immutable_struct_ex_redactable*, by default, will redact fields named `:password` using the redacted label `"******"`. This will not meet your needs in all circumstances most likely. If this is *not* the case, you may change the fields that are redacted and the redactable label by changing the *immutable_struct_ex_redactable* configuration via the `#whitelist` or `#blacklist` configuration options:
+_immutable_struct_ex_redactable_, by default, will redact fields named `:password` using the redacted label `"******"`. This will not meet your needs in all circumstances most likely. If this is _not_ the case, you may change the fields that are redacted and the redactable label by changing the _immutable_struct_ex_redactable_ configuration via the `#whitelist` or `#blacklist` configuration options:
 
 ##### Using a whitelist
+
 ```ruby
 ImmutableStructExRedactable::configure do |config|
   config.whitelist = %i[first last]
@@ -53,6 +54,7 @@ ImmutableStructExRedactable.create(**fields)
 ```
 
 ##### Using a blacklist
+
 ```ruby
 ImmutableStructExRedactable::configure do |config|
   config.blacklist = %i[password dob ssn phone]
@@ -80,7 +82,7 @@ ImmutableStructExRedactable.create(**fields)
 => #<struct  first="Jane", last="Smith", password="[REDACTED]", dob="[REDACTED]">
 ```
 
-NOTE: Setting the global defaults in the above manner will affect **every** *immutable_struct_ex_redactable* struct instance you create unless you override the global configuration options, by passing a custom configuration.
+NOTE: Setting the global defaults in the above manner will affect **every** _immutable_struct_ex_redactable_ struct instance you create unless you override the global configuration options, by passing a custom configuration.
 
 #### Overriding the Global Configuration Options
 
@@ -107,7 +109,7 @@ ImmutableStructExRedactable.create_with(custom_config, **fields)
 
 ### Access to the Original Redacted Field Values
 
-By default, *immutable_struct_ex_redactable* **will not** allow access to redacted field values; that is, field values marked for redaction via the global configuration (`ImmutableStructExRedactable::Configuration#whitelist/#blacklist`) or by overriding the global configuration by passing a custom configuration (`ImmutableStructExRedactable.create_with(my_config, ...)`). However, if you really *need* access to redacted field values in their original, *un*redacted form, you can turn on the `ImmutableStructExRedactable::Configuration#redacted_unsafe` option in the global configuration or turn this same option on when passing a custom configuration. Turning the `redacted_unsafe` configuration option on in either scenario will instruct *immutable_struct_ex_redactable* to create *private methods* on structs created that will allow access to the original *un*redacted field values via `send:`. The *private methods* created that will allow access to the original *un*redacted field values, will have the following naming convention:
+By default, _immutable_struct_ex_redactable_ **will not** allow access to redacted field values; that is, field values marked for redaction via the global configuration (`ImmutableStructExRedactable::Configuration#whitelist/#blacklist`) or by overriding the global configuration by passing a custom configuration (`ImmutableStructExRedactable.create_with(my_config, ...)`). However, if you really _need_ access to redacted field values in their original, *un*redacted form, you can turn on the `ImmutableStructExRedactable::Configuration#redacted_unsafe` option in the global configuration or turn this same option on when passing a custom configuration. Turning the `redacted_unsafe` configuration option on in either scenario will instruct _immutable_struct_ex_redactable_ to create _private methods_ on structs created that will allow access to the original *un*redacted field values via `send:`. The _private methods_ created that will allow access to the original *un*redacted field values, will have the following naming convention:
 
 ```ruby
 unredacted_<redacted field>
